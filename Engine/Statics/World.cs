@@ -26,6 +26,14 @@ namespace Engine
 
         // Quest items
         public const int ITEM_ID_RAT_TAIL = 50;
+        public const int ITEM_ID_VIPER_TONGUE = 51;
+        public const int ITEM_ID_SPIDER_FANG = 52;
+        public const int ITEM_ID_ZOMBIE_DIGIT = 53;
+        public const int ITEM_ID_SKELETON_FEMUR = 54;
+        public const int ITEM_ID_ELEMENTAL_CORE = 55;
+        public const int ITEM_ID_VAMPIRE_GLITTER = 56;
+        public const int ITEM_ID_DREADLORD_EYE = 57;
+        public const int ITEM_ID_WEREWOLF_EAR = 58;
 
         // Healing potion(s)
         public const int ITEM_ID_HEALING_POTION_MINOR = 100;
@@ -53,6 +61,14 @@ namespace Engine
 
         // Quests
         public const int QUEST_ID_KILL_10_RATS = 1;
+        public const int QUEST_ID_KILL_10_SNAKES = 2;
+        public const int QUEST_ID_KILL_10_SPIDERS = 3;
+        public const int QUEST_ID_KILL_10_ZOMBIES = 4;
+        public const int QUEST_ID_KILL_10_SKELETONS = 5;
+        public const int QUEST_ID_KILL_15_ELEMENTALS = 6;
+        public const int QUEST_ID_KILL_10_VAMPIRES = 7;
+        public const int QUEST_ID_KILL_10_DREADLORDS = 8;
+        public const int QUEST_ID_KILL_10_WEREWOLVES = 9;
 
         // Buildings
         public const int BUILDING_ID_HOME = 1;
@@ -93,13 +109,22 @@ namespace Engine
 
             // Items: id, name, namePlural, cost, description
             Items.Add(new Item(ITEM_ID_RAT_TAIL, "Rat tail", "Rat tails", 0, "It's a tail. From a rat."));
+            Items.Add(new Item(ITEM_ID_VIPER_TONGUE, "Viper tongue", "Viper tongues", 0, "Slithery."));
+            Items.Add(new Item(ITEM_ID_SPIDER_FANG, "Spider fang", "Spider fangs", 0, "It's huge!"));
+            Items.Add(new Item(ITEM_ID_ZOMBIE_DIGIT, "Zombie digit", "Zombie digits", 0, "Yeah, it's -that- one."));
+            Items.Add(new Item(ITEM_ID_SKELETON_FEMUR, "Skeleton femur", "Skeleton femurs", 0, "I don't want to work, I just want to bang on my drums all day"));
+            Items.Add(new Item(ITEM_ID_ELEMENTAL_CORE, "Elemental core", "Elemental cores", 0, "Coreful not to drop it."));
+            Items.Add(new Item(ITEM_ID_VAMPIRE_GLITTER, "Vampire glitter", "Vampire glitter", 0, "Ew."));
+            Items.Add(new Item(ITEM_ID_DREADLORD_EYE, "Dreadlord eye", "Dreadlord eyes", 0, "It's still glaring at you."));
+            Items.Add(new Item(ITEM_ID_WEREWOLF_EAR, "Werewolf ear", "Werewolf ears", 0, "Less hairy than you expected."));
 
-            // Healing potions: id, name, namePlural, cost, description, amounttoheal
-            Items.Add(new Potion(ITEM_ID_HEALING_POTION_MINOR, "Minor healing potion", "Healing potions", 5, "It's a potion. It heals minor damage.", 5));
-            Items.Add(new Potion(ITEM_ID_HEALING_POTION_LESSER, "Lesser healing potion", "Healing potions", 15, "It's a potion. It heals lesser damage.", 13));
-            Items.Add(new Potion(ITEM_ID_HEALING_POTION_BASIC, "Basic healing potion", "Healing potions", 30, "It's a potion. It heals.", 20));
-            Items.Add(new Potion(ITEM_ID_HEALING_POTION_GREATER, "Greater healing potion", "Healing potions", 65, "It's a potion. It heals greater damage.", 40));
-            Items.Add(new Potion(ITEM_ID_HEALING_POTION_SUPERIOR, "Superior healing potion", "Healing potions", 120, "It's a potion. It heals superior damage.", 70));
+
+        // Healing potions: id, name, namePlural, cost, description, amounttoheal
+        Items.Add(new Potion(ITEM_ID_HEALING_POTION_MINOR, "Minor healing potion", "Healing potions", 5, "It's a potion. It heals minor damage.", 10));
+            Items.Add(new Potion(ITEM_ID_HEALING_POTION_LESSER, "Lesser healing potion", "Healing potions", 15, "It's a potion. It heals lesser damage.", 18));
+            Items.Add(new Potion(ITEM_ID_HEALING_POTION_BASIC, "Basic healing potion", "Healing potions", 30, "It's a potion. It heals.", 30));
+            Items.Add(new Potion(ITEM_ID_HEALING_POTION_GREATER, "Greater healing potion", "Healing potions", 65, "It's a potion. It heals greater damage.", 46));
+            Items.Add(new Potion(ITEM_ID_HEALING_POTION_SUPERIOR, "Superior healing potion", "Healing potions", 120, "It's a potion. It heals superior damage.", 75));
 
             // Resources
             Items.Add(new Item(ITEM_ID_LUMBER, "Lumber", "Lumber", 0, "Woody"));
@@ -111,18 +136,35 @@ namespace Engine
         private static void PopulateMonsters()
         {
             // name, currentHP, maxHP, id, maxDamage, xpReward, goldReward, loottable list
-            Monster rat = new Monster("Rat", 3, 3, MONSTER_ID_RAT, 5, 3, 2);
+            Monster rat = new Monster("Rat", 5, 5, MONSTER_ID_RAT, 3, 3, 2);
             rat.LootTable.Add(new LootItem(ItemByID(ITEM_ID_RAT_TAIL), 100, false));
 
-            Monster snake = new Monster("Snake", 5, 5, MONSTER_ID_SNAKE, 10, 5, 5);
-            Monster giantSpider = new Monster("Giant Spider", 5, 5, MONSTER_ID_GIANT_SPIDER, 10, 5, 5);
-            Monster zombie = new Monster("Zombie", 5, 5, MONSTER_ID_ZOMBIE, 10, 5, 5);
-            Monster skeleton = new Monster("Skeleton", 5, 5, MONSTER_ID_SKELETON, 10, 5, 5);
-            Monster fireElemental = new Monster("Fire elemental", 5, 5, MONSTER_ID_FIRE_ELEMENTAL, 10, 5, 5);
-            Monster iceElemental = new Monster("Ice elemental", 5, 5, MONSTER_ID_ICE_ELEMENTAL, 10, 5, 5);
-            Monster vampire = new Monster("Vampire", 5, 5, MONSTER_ID_VAMPIRE, 10, 5, 5);
-            Monster dreadlord = new Monster("Dreadlord", 5, 5, MONSTER_ID_DREADLORD, 10, 5, 5);
-            Monster werewolf = new Monster("Werewolf", 5, 5, MONSTER_ID_WEREWOLF, 10, 5, 5);
+            Monster snake = new Monster("Snake", 7, 7, MONSTER_ID_SNAKE, 5, 5, 5);
+            snake.LootTable.Add(new LootItem(ItemByID(ITEM_ID_VIPER_TONGUE), 100, false));
+
+            Monster giantSpider = new Monster("Giant Spider", 10, 10, MONSTER_ID_GIANT_SPIDER, 8, 10, 15);
+            giantSpider.LootTable.Add(new LootItem(ItemByID(ITEM_ID_SPIDER_FANG), 100, false));
+
+            Monster zombie = new Monster("Zombie", 14, 14, MONSTER_ID_ZOMBIE, 11, 16, 29);
+            zombie.LootTable.Add(new LootItem(ItemByID(ITEM_ID_ZOMBIE_DIGIT), 100, false));
+
+            Monster skeleton = new Monster("Skeleton", 20, 20, MONSTER_ID_SKELETON, 15, 23, 40);
+            skeleton.LootTable.Add(new LootItem(ItemByID(ITEM_ID_SKELETON_FEMUR), 100, false));
+
+            Monster fireElemental = new Monster("Fire elemental", 29, 29, MONSTER_ID_FIRE_ELEMENTAL, 19, 29, 55);
+            fireElemental.LootTable.Add(new LootItem(ItemByID(ITEM_ID_ELEMENTAL_CORE), 100, false));
+
+            Monster iceElemental = new Monster("Ice elemental", 40, 40, MONSTER_ID_ICE_ELEMENTAL, 23, 38, 75);
+            iceElemental.LootTable.Add(new LootItem(ItemByID(ITEM_ID_ELEMENTAL_CORE), 100, false));
+
+            Monster vampire = new Monster("Vampire", 55, 55, MONSTER_ID_VAMPIRE, 28, 49, 100);
+            vampire.LootTable.Add(new LootItem(ItemByID(ITEM_ID_VAMPIRE_GLITTER), 100, false));
+
+            Monster dreadlord = new Monster("Dreadlord", 75, 75, MONSTER_ID_DREADLORD, 33, 61, 130);
+            dreadlord.LootTable.Add(new LootItem(ItemByID(ITEM_ID_DREADLORD_EYE), 100, false));
+
+            Monster werewolf = new Monster("Werewolf", 100, 100, MONSTER_ID_WEREWOLF, 40, 80, 175);
+            werewolf.LootTable.Add(new LootItem(ItemByID(ITEM_ID_WEREWOLF_EAR), 100, false));
 
             Monsters.Add(rat);
             Monsters.Add(snake);
@@ -143,11 +185,83 @@ namespace Engine
                 new Quest(
                     QUEST_ID_KILL_10_RATS,
                     "Kill 10 rats and gather their tails.",
-                    "You know the drill, kill those buggers. You'll receive a healing potion and 10 gold pieces.", 20, 10);
+                    "You know the drill, kill those buggers. You'll receive a healing potion and 10 gold pieces.", 50, 100);
             killTenRats.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_RAT_TAIL), 10));
-            killTenRats.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_MINOR);
+            killTenRats.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_LESSER);
+
+            Quest killTenSnakes =
+                new Quest(
+                    QUEST_ID_KILL_10_SNAKES,
+                    "Kill 10 snakes and gather their tongues.",
+                    "We have many envelopes that need sealing, go get us some snake tongues for that.", 75, 120);
+            killTenSnakes.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_VIPER_TONGUE), 10));
+            killTenSnakes.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_LESSER);
+
+            Quest killTenSpiders =
+                new Quest(
+                    QUEST_ID_KILL_10_SPIDERS,
+                    "Kill 10 spiders and gather their fangs.",
+                    "My hole puncher broke yesterday, get me some spider fangs to make a new one.", 100, 160);
+            killTenSpiders.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_SPIDER_FANG), 10));
+            killTenSpiders.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_BASIC);
+
+            Quest killTenZombies =
+                new Quest(
+                    QUEST_ID_KILL_10_ZOMBIES,
+                    "Kill 10 zombies and gather their fingers.",
+                    "I wanna flip someone the ultimate bird, get me 10 zombie fingers!", 150, 210);
+            killTenZombies.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_ZOMBIE_DIGIT), 10));
+            killTenZombies.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_BASIC);
+
+            Quest killTenSkeletons =
+                new Quest(
+                    QUEST_ID_KILL_10_SKELETONS,
+                    "Kill 10 skeletons and gather their femurs.",
+                    "We need some xylophone mallets for our orchestra. Go get me some skeletal femurs.", 175, 275);
+            killTenSkeletons.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_SKELETON_FEMUR), 10));
+            killTenSkeletons.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_BASIC);
+
+        Quest killFifteenElementals =
+                new Quest(
+                    QUEST_ID_KILL_15_ELEMENTALS,
+                    "Kill 10 elementals and gather their cores.",
+                    "The blacksmith needs 15 elemental cores, doesn't matter from which ones.", 200, 340);
+            killFifteenElementals.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_ELEMENTAL_CORE), 15));
+            killFifteenElementals.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_GREATER);
+
+            Quest killTenVampires =
+                new Quest(
+                    QUEST_ID_KILL_10_VAMPIRES,
+                    "Kill 10 vampires and gather their glitter.",
+                    "I wanna send someone I hate a card. Go get some organic glitter from the vampires in the dungeon.", 225, 400);
+            killTenVampires.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_VAMPIRE_GLITTER), 10));
+            killTenVampires.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_GREATER);
+
+            Quest killTenDreadlords =
+                new Quest(
+                    QUEST_ID_KILL_10_DREADLORDS,
+                    "Kill 10 dreadlords and gather their eyes.",
+                    "Our trapper needs something 'extra' for his special art exhibit. Go gather 10 dreadlord eyes.", 250, 500);
+            killTenDreadlords.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_DREADLORD_EYE), 10));
+            killTenDreadlords.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_SUPERIOR);
+
+            Quest killTenWerewolves =
+                new Quest(
+                    QUEST_ID_KILL_10_WEREWOLVES,
+                    "Kill 10 werewolves and gather their ears.",
+                    "The oldies in town have some hearing trouble. Get us some werewolf ears to aid in that.", 300, 750);
+            killTenWerewolves.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_WEREWOLF_EAR), 10));
+            killTenWerewolves.RewardItem = ItemByID(ITEM_ID_HEALING_POTION_SUPERIOR);
 
             Quests.Add(killTenRats);
+            Quests.Add(killTenSnakes);
+            Quests.Add(killTenSpiders);
+            Quests.Add(killTenZombies);
+            Quests.Add(killTenSkeletons);
+            Quests.Add(killFifteenElementals);
+            Quests.Add(killTenVampires);
+            Quests.Add(killTenDreadlords);
+            Quests.Add(killTenWerewolves);
         }
 
         private static void PopulateBuildings()

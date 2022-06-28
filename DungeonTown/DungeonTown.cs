@@ -13,12 +13,10 @@ namespace DungeonTown
 {
     /// <summary>
     /// ToDo: 
-    /// - Level-up system
-    /// - Monster stats => balance both!
     /// - Create playable version and upload code to github
     /// - Vendors
     /// - Armors => implement armor use
-    /// - Quests (check quest completion in Town Hall)
+    /// - Quests (check quest completion in Town Hall) => testing req.
     /// - Refactor code; move things to more logical classes
     /// - Magic/skill system (add Herbalist, Magic Shop, Skill/Magic trainer)
     /// </summary>
@@ -206,6 +204,7 @@ namespace DungeonTown
                         Environment.NewLine + "You grab it." + Environment.NewLine;
                     _player.AddItemToInventory(rewardPotion);
                     UpdatePotionListInUI();
+                    UpdateInventoryListInUI();
                     break;
                 case 3: // Grand treasure
                     _player.Gold += RandomNumberGenerator.NumberBetween(20, 50);
@@ -499,8 +498,8 @@ namespace DungeonTown
             }
             else
             {
-                enterBuilding(true, building);
                 rtbMessages.Text += "You enter the " + building.Name + "." + Environment.NewLine;
+                enterBuilding(true, building);
             }
         }
 
@@ -517,8 +516,10 @@ namespace DungeonTown
             }
             else
             {
-                //btnUpgrade.Visible = true;
-                //btnAction.Visible = true; => buy/quest button?
+                if(_enteredBuilding.ID == 7)
+                {
+                    QuestHandler();
+                }
             }
         }
 
@@ -555,6 +556,22 @@ namespace DungeonTown
                 }
                 rtbMessages.Text += "You've succesfully built the " + _enteredBuilding.Name + ". Congratulations!" + Environment.NewLine;
 
+                if(_enteredBuilding.ID == 4)
+                {
+                    _player.AddItemToInventory(World.ItemByID(2)); // Quarry has been built, player gets stone sword
+                    rtbMessages.Text += "Congratulations, you have been awarded the stone sword!";
+                }
+                else if(_enteredBuilding.ID == 5)
+                {
+                    _player.AddItemToInventory(World.ItemByID(3)); // Mine has been built, player gets bronze sword
+                    rtbMessages.Text += "Congratulations, you have been awarded the bronze sword!";
+                }
+                else if (_enteredBuilding.ID == 2)
+                {
+                    _player.AddItemToInventory(World.ItemByID(4)); // Blacksmith has been built, player gets iron sword
+                    rtbMessages.Text += "Congratulations, you have been awarded the iron sword!";
+                }
+
                 // Checking if requirements for other buildings are met.
                 foreach (Building building in World.Buildings)
                 {
@@ -579,6 +596,61 @@ namespace DungeonTown
         }
 
         // Misc methods
+        private void QuestHandler()
+        {
+            foreach(Quest quest in World.Quests)
+            {
+                bool playerAlreadyCompletedQuest = _player.CompletedThisQuest(quest);
+                bool playerAlreadyHasQuest = _player.HasThisQuest(quest);
+                if (!playerAlreadyCompletedQuest && !playerAlreadyHasQuest)
+                {
+                    rtbMessages.Text += Environment.NewLine + "You receive the " + quest.Name + " quest." + Environment.NewLine;
+                    rtbMessages.Text += quest.Description + Environment.NewLine;
+                    rtbMessages.Text += "To complete it, return with:" + Environment.NewLine;
+                    foreach (QuestCompletionItem qci in quest.QuestCompletionItems)
+                    {
+                        if (qci.Quantity == 1)
+                        {
+                            rtbMessages.Text += qci.Quantity.ToString() + " " + qci.Details.Name + Environment.NewLine;
+                        }
+                        else
+                        {
+                            rtbMessages.Text += qci.Quantity.ToString() + " " + qci.Details.NamePlural + Environment.NewLine;
+                        }
+                    }
+                    rtbMessages.Text += Environment.NewLine;
+
+                    _player.Quests.Add(new PlayerQuest(quest));
+                    break;
+                }
+                else if (!playerAlreadyCompletedQuest)
+                {
+                    bool playerHasAllItemsToCompleteQuest = _player.HasAllQuestCompletionItems(quest);
+
+                    if (playerHasAllItemsToCompleteQuest)
+                    {
+                        rtbMessages.Text += Environment.NewLine;
+                        rtbMessages.Text += "You complete the '" + quest.Name + "' quest." + Environment.NewLine;
+
+                        _player.RemoveQuestCompletionItems(quest);
+
+                        rtbMessages.Text += "You receive: " + Environment.NewLine;
+                        rtbMessages.Text += quest.XPReward.ToString() + " experience points" + Environment.NewLine;
+                        rtbMessages.Text += quest.GoldReward.ToString() + " gold" + Environment.NewLine;
+                        rtbMessages.Text += quest.RewardItem.Name + Environment.NewLine;
+                        rtbMessages.Text += Environment.NewLine;
+
+                        _player.ExperiencePoints += quest.XPReward;
+                        _player.Gold += quest.GoldReward;
+
+                        _player.AddItemToInventory(quest.RewardItem);
+
+                        _player.MarkQuestCompleted(quest);
+                    }
+                }
+            }
+        }
+
         private void MonsterAttack(string monsterName, Monster monster)
         {
             int damageToPlayer = RandomNumberGenerator.NumberBetween(0, monster.MaximumDamage);

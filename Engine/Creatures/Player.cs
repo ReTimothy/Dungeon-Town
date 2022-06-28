@@ -13,9 +13,10 @@ namespace Engine
         public int Lumber { get; set; }
         public int Stone { get; set; }
         public int Iron { get; set; }
+        public int QuestLevel { get; set; }
 
         public Player(string name, int currentHitPoints, int maxHitPoints, int experiencePoints,
-            int level, int gold, int Lumber = 0, int Stone = 0, int Iron = 0) 
+            int level, int gold, int Lumber = 0, int Stone = 0, int Iron = 0, int QuestLevel = 1) 
             : base(name, currentHitPoints, maxHitPoints, experiencePoints, level)
         {
             Gold = gold;

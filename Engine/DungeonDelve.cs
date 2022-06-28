@@ -104,7 +104,7 @@ namespace Engine
                     monster3.LootTable.Add(lootItem);
                 }
                 string monster3Name = monster3.Name + " 3";
-                monsters.Add(monster3.Name, monster3);
+                monsters.Add(monster3Name, monster3);
             }
 
             return monsters;
